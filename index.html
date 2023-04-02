@@ -75,8 +75,24 @@
     <p id="result"></p>
      <!--Get Error Here  -->
     <p id="error" style="color: red"></p>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
+      const API_URL = 'http://localhost:3000';
+      const token = localStorage.getItem('token');
+
+      axios.get(`${API_URL}/protected`, { headers: { Authorization: `Bearer ${token}` } })
+        .then(response => {
+          const user = response.data.user;
+          const message = `Welcome, ${user.username}!`;
+          const messageElement = document.createElement('p');
+          messageElement.textContent = message;
+          document.body.appendChild(messageElement);
+        })
+        .catch(error => {
+          alert('Access denied!');
+          window.location.href = '/login.html';
+        });
+
       function add() { //method used for add 
         const num1 = parseFloat(document.getElementById('num1').value);
         const num2 = parseFloat(document.getElementById('num2').value);
